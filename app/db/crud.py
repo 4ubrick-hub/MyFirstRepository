@@ -5,7 +5,7 @@ from app.db.models import Book, Category
 
 def create_category(db: Session, title: str):
     """Создать новую категорию"""
-    db_category = Category(title=title)
+    db_category = Category(title=title) 
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
