@@ -1,19 +1,27 @@
-from pydantic import BaseModel
-from typing import Optional, List
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
-# ===== Схемы категорий =====
+# ---------- Categories ----------
+
 class CategoryBase(BaseModel):
     title: str
 
-class CategoryCreate(CategoryBase): pass
+
+class CategoryCreate(CategoryBase):
+    pass
+
 
 class Category(CategoryBase):
     id: int
+
     class Config:
         from_attributes = True
 
-# ===== Схемы книг =====
+
+# ---------- Books ----------
+
 class BookBase(BaseModel):
     title: str
     description: Optional[str] = None
@@ -21,14 +29,23 @@ class BookBase(BaseModel):
     url: Optional[str] = None
     category_id: int
 
-class BookCreate(BookBase): pass
+
+class BookCreate(BookBase):
+    pass
+
 
 class Book(BookBase):
     id: int
     category: Optional[Category] = None
-    class Config: from_attributes = True
 
-# ===== Схемы коллекций =====
+    class Config:
+        from_attributes = True
+
+
+# ---------- Collections ----------
+
 class CategoryWithBooks(Category):
-    books: List[Book] = []
-    class Config: from_attributes = True
+    books: List[Book] = Field(default_factory=list)
+
+    class Config:
+        from_attributes = True
